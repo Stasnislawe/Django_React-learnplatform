@@ -14,9 +14,9 @@ export function CourseCard({ course }: CourseCardProps) {
 
   const handleCourseClick = () => {
     if (!authService.isAuthenticated()) {
-      navigate('/login', { state: { from: `/course/${course.id}/theories` } });
+      navigate(`/login`, { state: { from: `/course/${course.id}/theories` } });
     } else {
-      navigate('/course/${course.id}/theories');
+      navigate(`/course/${course.id}/theories`);
     }
   }
 
