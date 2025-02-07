@@ -27,6 +27,13 @@ export function Header() {
               <User className="h-5 w-5 mr-1" />
               <span>Личный кабинет</span>
             </Link>
+            <Link
+              to="/profile"
+              className="flex items-center text-gray-700 hover:text-indigo-600"
+            >
+              <User className="h-5 w-5 mr-1" />
+              <span>Поддержка</span>
+            </Link>
           </nav>
         </div>
       </div>
