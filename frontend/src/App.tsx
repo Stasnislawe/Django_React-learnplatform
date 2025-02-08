@@ -16,7 +16,6 @@ import { AuthGuard } from './components/AuthGuard';
 export default function App() {
   return (
     <BrowserRouter>
-      <Navbar />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/courses" element={<HomePage />} />
