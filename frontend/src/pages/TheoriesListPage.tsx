@@ -26,8 +26,7 @@ export function TheoriesListPage() {
   };
 
   return (
-    <div>
-      <Header />
+    <div className="bg-gray-100 dark:bg-gray-900">
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <h1 className="text-3xl font-bold mb-8">Теоретические материалы</h1>
 
@@ -40,28 +39,59 @@ export function TheoriesListPage() {
                   <div
                     key={theory.theory_id}
                     onClick={() => accessible && navigate(`/course/${id}/theories/${theory.theory_id}`)}
-                    className={`z-10 bg-gray-300/80 ${accessible  ? 'cursor-pointer hover:bg-gray-50' : 'opacity-50'} p-6 rounded-lg  shadow-md hover:shadow-lg transition-shadow text-left`}
+                    className={`
+                      relative aspect-square rounded-xl overflow-hidden shadow-lg
+                      ${accessible ? 'cursor-pointer transform hover:scale-105 transition-transform' : 'cursor-not-allowed'}
+                    `}
                   >
-                  <Lock className="w-12 h-12 z-20 max-auto text-gray-400" />
-                    <div>
-                      <img className="bg-cover rounded-lg h-56 pointer-events-none w-full mb-1" src={theory.image_theory} />
+                    {/* Background Image */}
+                    <div className="absolute inset-0">
+                      <img
+                        src={theory.image_theory}
+                        alt={theory.title_theory}
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20" />
                     </div>
-                    <div className="flex items-center mb-2">
-                      <Brain className="h-6 w-6 text-indigo-600 mr-2" />
-                      <h2 className="text-xl font-semibold">{theory.title_theory}</h2>
-                    </div>
-                    <div>
-                        <p className="text-gray-600 mb-4">{theory.about_theory}</p>
-                        <div className="flex items-center gap-2">
-                          {isRead && <CheckCircle className="w-5 h-5 text-green-500" />}
-                          {!accessible && <Lock className="w-12 h-12 text-gray-400" />}
-                        </div>
+
+                    {/* Blur Overlay for Locked Parts */}
+                    {!accessible && (
+                      <div className="absolute inset-0 backdrop-blur-md bg-black/30 flex items-center justify-center">
+                        <Lock className="w-40 h-40 text-white/80" />
+                        <p className="">Прочтите предыдущую теорию</p>
+                      </div>
+                    )}
+
+                    {/* Content */}
+                    <div className="absolute inset-0 p-6 flex flex-col justify-between">
+                      <div className="flex justify-between items-start">
+                        <h2 className="text-xl font-bold text-white">
+                          Part {theory.theory_id}
+                        </h2>
+                        {isRead && (
+                          <div className="bg-green-500/90 rounded-full p-1">
+                            <CheckCircle className="w-5 h-5 text-white" />
+                          </div>
+                        )}
+                      </div>
+
+                      <div>
+                        <h3 className="text-lg font-medium text-white mb-2">
+                          {theory.title_theory}
+                        </h3>
+                        {accessible && (
+                          <p className="text-gray-200 text-sm line-clamp-3">
+                            {theory.text_theory}
+                          </p>
+                        )}
+                      </div>
                     </div>
                   </div>
-              );
-          })}
+                );
+              })}
         </div>
       </main>
     </div>
   );
 }
+
