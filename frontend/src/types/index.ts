@@ -3,6 +3,7 @@ export interface Course {
   title_theory: string;
   image_title: string;
   about: string;
+  free: boolean;
 }
 
 export Theories {
