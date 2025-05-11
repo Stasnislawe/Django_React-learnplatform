@@ -1,3 +1,53 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  :root[class~="dark"] {
+    color-scheme: dark;
+  }
+}
+
+.prose {
+  @apply text-gray-900 dark:text-gray-100;
+}
+
+.prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+  @apply text-gray-900 dark:text-white;
+}
+
+.prose p {
+  @apply text-gray-700 dark:text-gray-300;
+}
+
+.prose a {
+  @apply text-indigo-600 dark:text-indigo-400;
+}
+
+.prose strong {
+  @apply text-gray-900 dark:text-white;
+}
+
+.prose blockquote {
+  @apply border-l-4 border-gray-300 dark:border-gray-700;
+}
+
+.prose code {
+  @apply bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white;
+}
+
+.prose pre {
+  @apply bg-gray-100 dark:bg-gray-800;
+}
+
+.prose ol, .prose ul {
+  @apply text-gray-700 dark:text-gray-300;
+}
+
+.prose li {
+  @apply text-gray-700 dark:text-gray-300;
+}
