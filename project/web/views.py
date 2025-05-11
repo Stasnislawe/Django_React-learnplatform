@@ -2,7 +2,7 @@ from rest_framework.permissions import IsAuthenticated
 from .models import Theorys, Course, Practice, Questions, Answers
 from .serializer import TheorySerializer, PracticeSerializer, QuestionsSerializer, AnswerSerializer, CourseSerializer, \
     UserSerializer
-from rest_framework import status, viewsets
+from rest_framework import status, viewsets, generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -31,6 +31,7 @@ class RegisterView(APIView):
 
 
 class TheoriesListView(viewsets.ModelViewSet):
+    # permission_classes = (IsAuthenticated, )
     queryset = Theorys.objects.all()
     serializer_class = TheorySerializer
     lookup_field = 'theory_id'
@@ -65,12 +66,36 @@ class AnswersListView(viewsets.ModelViewSet):
         return Answers.objects.filter(question=question_id)
 
 
-class TheoryListView(viewsets.ModelViewSet):
+class CourseFreeDetailSerializerView(viewsets.ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
 
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
+    def retrieve(self, request, *args, **kwargs):
+        free_param = self.kwargs.get('free')
+        course = self.get_object()
+
+        if free_param == 'True' and not course.free:
+            return Response({"detail": 'Курс не доступен'}, status=status.HTTP_404_NOT_FOUND)
+        elif free_param == 'False' and course.free:
+            return Response({"detail": 'Курс доступен бесплатно'}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = self.get_serializer(course)
+        return Response(serializer.data)
+
+
+class CourseListView(generics.ListAPIView):
+    queryset = Course.objects.all()
+    serializer_class = CourseSerializer
+
+    def get_queryset(self):
+        free_param = self.kwargs.get('free', None)
+
+        if free_param == 'True':
+            return Course.objects.filter(free=True)
+        elif free_param == 'False':
+            return Course.objects.filter(free=False)
+        else:
+            return Course.objects.all()
 
     def create(self, request, *args, **kwargs):
         if self.action == 'create':
@@ -106,8 +131,8 @@ class TheoryListView(viewsets.ModelViewSet):
         return super().create(request, *args, **kwargs)
 
     def update(self, request, *args, **kwargs):
-        theory = self.get_object()
-        serializer = TheorySerializer(theory, data=request.data, partial=True)
+        book = self.get_object()
+        serializer = CourseSerializer(book, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(
