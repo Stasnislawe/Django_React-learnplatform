@@ -12,46 +12,56 @@ import { Navbar } from './components/Navbar';
 import { Login } from './pages/Login';
 import { Register } from './pages/Register';
 import { AuthGuard } from './components/AuthGuard';
+import { Header } from './components/Header';
+import { Profile } from './pages/Profile';
+import { ThemeProvider } from './context/ThemeContext';
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/courses" element={<HomePage />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route
-          path="/course/:id/theories"
-          element={
-            <AuthGuard>
-              <TheoriesListPage />
-            </AuthGuard>
-          }
-        />
-        <Route
-          path="/course/:id/theories/:theoryId" element={
-            <AuthGuard>
-              <TheoryPage />
-            </AuthGuard>
-          }
-        />
-        <Route
-          path="/course/:id/practices" element={
-            <AuthGuard>
-              <PracticesListPage />
-            </AuthGuard>
-          }
-        />
-        <Route
-          path="/course/:id/practice/:practiceId" element={
-            <AuthGuard>
-              <PracticePage />
-            </AuthGuard>
-          }
-        />
-      </Routes>
-    </BrowserRouter>
+      <ThemeProvider>
+        <BrowserRouter>
+          <Header />
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/courses" element={<HomePage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route
+              path="/course/:id/theories"
+              element={
+                <AuthGuard>
+                <TheoriesListPage />
+                </AuthGuard>
+            }
+            />
+            <Route
+              path="/course/:id/theories/:theoryId"
+              element={
+                <AuthGuard>
+                <TheoryPage />
+                </AuthGuard>
+            }
+            />
+            <Route
+              path="/course/:id/practices"
+              element={
+                <AuthGuard>
+                <PracticesListPage />
+                </AuthGuard>
+            }
+            />
+            <Route
+              path="/course/:id/practice/:practiceId"
+              element={
+                <AuthGuard>
+                <PracticePage />
+                </AuthGuard>
+            }
+            />
+        </Routes>
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }
 
