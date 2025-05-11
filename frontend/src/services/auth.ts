@@ -1,5 +1,5 @@
 import { LoginCredentials, RegisterCredentials, AuthTokens } from '../types/auth';
-import { API_BASE_URL } from '../api/endpoints';
+import { API_URL } from '../config';
 
 class AuthService {
   private static instance: AuthService;
@@ -20,7 +20,7 @@ class AuthService {
   }
 
   async login(credentials: LoginCredentials): Promise<void> {
-    const response = await fetch(`${API_BASE_URL}/token/`, {
+    const response = await fetch(`${API_URL}/token/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -35,10 +35,18 @@ class AuthService {
     const data = await response.json();
     this.setTokens(data);
     localStorage.setItem('username', credentials.username);
+
+    // Transfer free books read status to the authenticated user
+    const readFreeBooks = JSON.parse(localStorage.getItem('readFreeCourses') || '[]');
+    if (readFreeBooks.length > 0) {
+      // Here you would typically make an API call to update the user's read books
+      // For now, we'll keep the local storage record
+      localStorage.setItem('userReadCourses', JSON.stringify(readFreeBooks));
+    }
   }
 
   async register(credentials: RegisterCredentials): Promise<void> {
-    const response = await fetch(`${API_BASE_URL}/register/`, {
+    const response = await fetch(`${API_URL}/register/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -56,7 +64,7 @@ class AuthService {
   async logout(): Promise<void> {
     if (this.tokens?.access) {
       try {
-        const response = await fetch(`${API_BASE_URL}/logout/`, {
+        const response = await fetch(`${API_URL}/logout/`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -75,6 +83,9 @@ class AuthService {
     this.tokens = null;
     localStorage.removeItem('auth_tokens');
     localStorage.removeItem('username');
+    localStorage.removeItem('readFreeCourses');
+    localStorage.removeItem('registrationPromptShown');
+    localStorage.removeItem('userReadCourses');
   }
 
   isAuthenticated(): boolean {
