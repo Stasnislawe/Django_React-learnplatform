@@ -15,6 +15,7 @@ class Course(models.Model):
     title_theory = models.CharField(max_length=120, verbose_name='Главное название теории')
     image_title = models.ImageField(upload_to='images_title_theory/', blank=True, verbose_name='Изображения шапки теории')
     about = models.TextField(verbose_name='Чему научитесь')
+    free = models.BooleanField(default=False, verbose_name='Бесплатный курс')
 
 
 class Theorys(models.Model):
