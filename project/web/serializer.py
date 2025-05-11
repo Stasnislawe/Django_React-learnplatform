@@ -22,7 +22,7 @@ class UserSerializer(serializers.ModelSerializer):
 class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
-        fields = ('id', 'title_theory', 'image_title', 'about')
+        fields = ('id', 'title_theory', 'image_title', 'about', 'free',)
 
 
 class TheorySerializer(serializers.ModelSerializer):
