@@ -21,7 +21,7 @@ export function AuthGuard({ children }: AuthGuardProps) {
           const course = await fetchFreeCourse(id);
           setIsFreeCourse(course.free);
         } catch (error) {
-          console.error('Error checking book access:', error);
+          console.error('Error checking course access:', error);
           setIsFreeBook(false);
         }
       }
@@ -32,7 +32,7 @@ export function AuthGuard({ children }: AuthGuardProps) {
   }, [id]);
 
   if (isLoading) {
-    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+    return <div className="min-h-screen flex items-center justify-center">Загрузка...</div>;
   }
 
   // Allow access if the book is free or user is authenticated
