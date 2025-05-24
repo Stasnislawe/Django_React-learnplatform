@@ -7,7 +7,7 @@ export async function fetchCourses(): Promise<Course[]> {
     headers: getHeaders(),
   });
   if (!response.ok) {
-    throw new Error('Failed to fetch courses');
+    throw new Error('Не удалось получить курсы');
   }
   return response.json();
 }
@@ -17,7 +17,7 @@ export async function fetchCourse(id: number): Promise<Course> {
     headers: getHeaders(),
   });
   if (!response.ok) {
-    throw new Error('Failed to fetch course');
+    throw new Error('Не удалось получить курс');
   }
   return response.json();
 }
@@ -25,7 +25,7 @@ export async function fetchCourse(id: number): Promise<Course> {
 export async function fetchFreeCourses(): Promise<Course[]>{
   const response = await fetch(`${API_BASE_URL}/courses/True/`);
   if (!response.ok) {
-    throw new Error('Failed to load free courses');
+    throw new Error('Не удалось получить бесплатные курсы');
   }
   return response.json();
 }
@@ -33,7 +33,7 @@ export async function fetchFreeCourses(): Promise<Course[]>{
 export async function fetchFreeCourse(id: number): Promise<Course> {
   const response = await fetch(`${API_BASE_URL}/courses/True/${id}/`);
   if (!response.ok) {
-    throw new Error('Failed to fetch course');
+    throw new Error('Не удалось получить бесплатный курс');
   }
   return response.json();
 }
