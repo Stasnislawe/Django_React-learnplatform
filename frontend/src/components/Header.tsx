@@ -1,11 +1,15 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { BookOpen, User, GraduationCap } from 'lucide-react';
+import { BookOpen, User, GraduationCap, Sun, Moon } from 'lucide-react';
 import { authService } from '../services/auth';
+import { useTheme } from '../context/ThemeContext';
+
 
 export function Header() {
   const isAuthenticated = authService.isAuthenticated();
   const navigate = useNavigate();
+  const { theme, toggleTheme } = useTheme();
+
 
   return (
     <header className="bg-gray-100 dark:bg-gray-900 shadow-md">
@@ -25,21 +29,7 @@ export function Header() {
               </nav>
             ) : (
               <nav className="flex space-x-8">
-              <Link
-                to="/courses"
-                className="flex items-center text-gray-700 dark:text-indigo-700 hover:text-indigo-600 dark:hover:text-white"
-              >
-                <BookOpen className="h-5 w-5 mr-1" />
-                <span>Курсы</span>
-              </Link>
 
-              <Link
-                to="/profile"
-                className="flex items-center text-gray-700 dark:text-indigo-700 hover:text-indigo-600 dark:hover:text-white"
-              >
-                <User className="h-5 w-5 mr-1" />
-                <span>Личный кабинет</span>
-              </Link>
               <Link
                 to="/profile"
                 className="flex items-center text-gray-700 dark:text-indigo-700 hover:text-indigo-600 dark:hover:text-white"
@@ -47,6 +37,31 @@ export function Header() {
                 <User className="h-5 w-5 mr-1" />
                 <span>Поддержка</span>
               </Link>
+              <Link
+                to="/profile"
+                className="flex items-center text-gray-700 dark:text-indigo-700 hover:text-indigo-600 dark:hover:text-white"
+              >
+                <User className="h-5 w-5 mr-1" />
+                <span>Личный кабинет</span>
+              </Link>
+              <div className="flex items-center gap-4">
+                <button
+                  onClick={toggleTheme}
+                  className="flex items-center gap-2 px-4 py-2 text-gray-700 dark:text-indigo-700 hover:text-indigo-600 dark:hover:text-white rounded-lg transition-colors"
+                >
+                  {theme === 'dark' ? (
+                    <>
+                      <Sun className="w-5 h-5" />
+                      <span>Светлый режим</span>
+                    </>
+                  ) : (
+                    <>
+                      <Moon className="w-5 h-5" />
+                      <span>Тёмный режим</span>
+                    </>
+                  )}
+                </button>
+              </div>
               </nav>
             )}
         </div>
