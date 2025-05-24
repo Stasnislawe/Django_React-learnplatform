@@ -12,7 +12,7 @@ export async function fetchPractices(courseId: number): Promise<Practice[]> {
     headers: getHeaders(),
   });
   if (!response.ok) {
-    throw new Error('Ошибка в подключении к апи джанго - список практикии');
+    throw new Error('Не удалось получить практику');
   }
   const practices = await response.json();
   return getRandomItems(practices, RANDOM_LIMIT);
@@ -26,7 +26,7 @@ export async function fetchPracticeDetails(courseId: number, practiceId: number)
     headers: getHeaders(),
   });
   if (!response.ok) {
-    throw new Error('Failed to fetch practice details');
+    throw new Error('Не удалось получить детали практики');
   }
   return response.json();
 }
