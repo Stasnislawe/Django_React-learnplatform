@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { Navigate, useLocation, useParams } from 'react-router-dom';
 import { authService } from '../services/auth';
-import { fetchFreeCourse, fetchCourse } from '../api/courses';
+import { fetchFreeCourse } from '../api/courses'; // исправлен импорт
 import { useState, useEffect } from 'react';
 
 interface AuthGuardProps {
@@ -12,30 +12,39 @@ export function AuthGuard({ children }: AuthGuardProps) {
   const location = useLocation();
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(true);
-  const [isFreeCourse, setIsFreeCourse] = useState(false);
+  const [isFreeCourse, setIsFreeCourse] = useState(false); // правильное название
 
   useEffect(() => {
     const checkCourseAccess = async () => {
       if (id) {
         try {
-          const course = await fetchFreeCourse(id);
-          setIsFreeCourse(course.free);
+          if (!authService.isAuthenticated()) {
+            // Для неавторизованных проверяем бесплатный ли курс
+            const course = await fetchFreeCourse(Number(id));
+            setIsFreeCourse(course.free);
+          } else {
+            // Для авторизованных просто разрешаем доступ
+            setIsFreeCourse(false);
+          }
         } catch (error) {
           console.error('Error checking course access:', error);
-          setIsFreeBook(false);
+          setIsFreeCourse(false);
+        } finally {
+          setIsLoading(false);
         }
+      } else {
+        setIsLoading(false);
       }
-      setIsLoading(false);
     };
 
     checkCourseAccess();
   }, [id]);
 
   if (isLoading) {
-    return <div className="min-h-screen flex items-center justify-center">Загрузка...</div>;
+    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
   }
 
-  // Allow access if the book is free or user is authenticated
+  // Allow access if the course is free or user is authenticated
   if (isFreeCourse || authService.isAuthenticated()) {
     return <>{children}</>;
   }
