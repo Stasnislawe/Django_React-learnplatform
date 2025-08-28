@@ -1,23 +1,38 @@
-import { ENDPOINTS, getHeaders } from './endpoints';
+import { API_URL } from '../config';
+import { authService } from '../services/auth';
 import type { Theories } from '../types';
 
 export async function fetchTheories(id: string): Promise<Theories[]> {
-  const response = await fetch(`${ENDPOINTS.courses}${id}/theories/`, {
-    headers: getHeaders(),
-  });
-  if (!response.ok) {
-    throw new Error('Ошибка в подключении к апи джанго - список теории');
+  const free = !authService.isAuthenticated() ? 'True' : 'False';
+
+  try {
+    const response = await authService.authenticatedFetch(
+      `${API_URL}/courses/${free}/${id}/theories/`
+    );
+    if (!response.ok) {
+      throw new Error('Ошибка в подключении к апи джанго - список теории');
+    }
+    return response.json();
+  } catch (error) {
+    console.error('Error fetching theories:', error);
+    throw error;
   }
-  return response.json();
 }
 
 export async function fetchTheoriesDetails(id: string, theoriesId: string): Promise<{
 }> {
-  const response = await fetch(`${ENDPOINTS.courses}${id}/theories/${theoriesId}`, {
-    headers: getHeaders(),
-  });
-  if (!response.ok) {
-    throw new Error('Failed to fetch theoriesId');
+  const free = !authService.isAuthenticated() ? 'True' : 'False';
+
+  try {
+    const response = await authService.authenticatedFetch(
+      `${API_URL}/courses/${free}/${id}/theories/${theoriesId}`
+    );
+    if (!response.ok) {
+      throw new Error('Failed to fetch theoriesId');
+    }
+    return response.json();
+  } catch (error) {
+    console.error('Error fetching theory details:', error);
+    throw error;
   }
-  return response.json();
 }

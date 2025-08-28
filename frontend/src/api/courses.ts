@@ -1,39 +1,83 @@
-import { ENDPOINTS, getHeaders, API_BASE_URL } from './endpoints';
-import type { Course } from '../types';
+import { API_URL } from '../config';
 import { authService } from '../services/auth';
+import type { Course } from '../types';
 
 export async function fetchCourses(): Promise<Course[]> {
-  const response = await fetch(ENDPOINTS.courses, {
-    headers: getHeaders(),
-  });
-  if (!response.ok) {
-    throw new Error('Не удалось получить курсы');
+  if (!authService.isAuthenticated()) {
+    // For unauthenticated users, fetch only free courses
+    try {
+      const response = await fetch(`${API_URL}/courses/True/`);
+      if (!response.ok) {
+        throw new Error('Не удалось получить бесплатные курсы');
+      }
+      return response.json();
+    } catch (error) {
+      console.error('Error fetching free courses:', error);
+      throw error;
+    }
   }
-  return response.json();
+
+  try {
+    const response = await authService.authenticatedFetch(`${API_URL}/courses/False/`);
+    if (!response.ok) {
+      throw new Error('Не удалось получить курсы');
+    }
+    return response.json();
+  } catch (error) {
+    console.error('Error fetching courses:', error);
+    throw error;
+  }
 }
 
 export async function fetchCourse(id: number): Promise<Course> {
-  const response = await fetch(`${ENDPOINTS.courses}${id}/`, {
-    headers: getHeaders(),
-  });
-  if (!response.ok) {
-    throw new Error('Не удалось получить курс');
+  if (!authService.isAuthenticated()) {
+    // For unauthenticated users, fetch only free courses
+    try {
+      const response = await fetch(`${API_URL}/courses/True/${id}/`);
+      if (!response.ok) {
+        throw new Error('Не удалось получить бесплатный курс');
+      }
+      return response.json();
+    } catch (error) {
+      console.error('Error fetching free course:', error);
+      throw error;
+    }
   }
-  return response.json();
+
+  try {
+    const response = await authService.authenticatedFetch(`${API_URL}/courses/False/${id}/`);
+    if (!response.ok) {
+      throw new Error('Не удалось получить курс');
+    }
+    return response.json();
+  } catch (error) {
+    console.error('Error fetching course:', error);
+    throw error;
+  }
 }
 
 export async function fetchFreeCourses(): Promise<Course[]>{
-  const response = await fetch(`${API_BASE_URL}/courses/True/`);
-  if (!response.ok) {
-    throw new Error('Не удалось получить бесплатные курсы');
+  try {
+    const response = await fetch(`${API_URL}/courses/True/`);
+    if (!response.ok) {
+      throw new Error('Не удалось получить бесплатные курсы');
+    }
+    return response.json();
+  } catch (error) {
+    console.error('Error fetching free courses:', error);
+    throw error;
   }
-  return response.json();
 }
 
 export async function fetchFreeCourse(id: number): Promise<Course> {
-  const response = await fetch(`${API_BASE_URL}/courses/True/${id}/`);
-  if (!response.ok) {
-    throw new Error('Не удалось получить бесплатный курс');
+  try {
+    const response = await fetch(`${API_URL}/courses/True/${id}/`);
+    if (!response.ok) {
+      throw new Error('Не удалось получить бесплатный курс');
+    }
+    return response.json();
+  } catch (error) {
+    console.error('Error fetching free course:', error);
+    throw error;
   }
-  return response.json();
 }
