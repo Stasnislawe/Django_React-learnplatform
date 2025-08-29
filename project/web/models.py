@@ -3,6 +3,7 @@ from django.db import models
 
 
 class User(AbstractUser):
+    """Модель Пользователя для регистрации/авторизации"""
     username = models.CharField(max_length=150, unique=True)
     email = models.CharField(max_length=255)
     password = models.CharField(max_length=255)
@@ -12,6 +13,7 @@ class User(AbstractUser):
 
 
 class Course(models.Model):
+    """Модель курса"""
     title_theory = models.CharField(max_length=120, verbose_name='Главное название теории')
     image_title = models.ImageField(upload_to='images_title_theory/', blank=True, verbose_name='Изображения шапки теории')
     about = models.TextField(verbose_name='Чему научитесь')
@@ -19,6 +21,7 @@ class Course(models.Model):
 
 
 class Theorys(models.Model):
+    """Модель теории в одном курсе"""
     title_theory = models.CharField(max_length=120, verbose_name='Название теории')
     text_theory = models.TextField(verbose_name='Текст теории')
     image_theory = models.ImageField(upload_to='images_title_theory/', blank=True, verbose_name='Изображение теории')
@@ -28,11 +31,13 @@ class Theorys(models.Model):
 
 
 class TheoryImages(models.Model):
+    """Модель изображений в теории - не функционально"""
     theory = models.ForeignKey(Course, on_delete=models.CASCADE)
     images = models.ImageField(upload_to='images_theory/', blank=True, verbose_name='Изображения теории')
 
 
 class Practice(models.Model):
+    """Модель практики в курсе - практические занятия"""
     title = models.CharField(max_length=100, blank=True, null=True)
     image = models.ImageField(upload_to='images_practice/', blank=True, verbose_name='Изображения практики')
     description = models.TextField(blank=True)
@@ -41,6 +46,7 @@ class Practice(models.Model):
 
 
 class Questions(models.Model):
+    """Модель вопросов - используется в практических занятиях"""
     question = models.CharField(max_length=256, verbose_name='Вопрос')
     image_question = models.ImageField(upload_to='images_question/', blank=True, verbose_name='Изображение вопросоа')
     answer = models.CharField(max_length=256, verbose_name='Ответ')
@@ -49,6 +55,7 @@ class Questions(models.Model):
 
 
 class Answers(models.Model):
+    """Модель ответов на вопросы - используется в модели вопросах"""
     question_str = models.CharField(max_length=256, verbose_name='Ответ')
     question = models.ForeignKey(Questions, on_delete=models.CASCADE, related_name='answer_question', verbose_name='Ответ на вопрос')
 
