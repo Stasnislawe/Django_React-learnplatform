@@ -34,6 +34,7 @@ class TheoryImages(models.Model):
 
 class Practice(models.Model):
     title = models.CharField(max_length=100, blank=True, null=True)
+    image = models.ImageField(upload_to='images_practice/', blank=True, verbose_name='Изображения практики')
     description = models.TextField(blank=True)
     questions_count = models.IntegerField(default=1)
     course_id = models.ManyToManyField(Course, related_name='practice_theory', verbose_name='Теории для изучения')

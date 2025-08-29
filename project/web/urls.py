@@ -72,5 +72,4 @@ urlpatterns = [
         'put': 'update',
         'delete': 'destroy',
     })),
-
 ]

@@ -22,6 +22,7 @@ export interface Practice {
   description: string;
   question_count: number;
   course_id: number;
+  image: string;
 }
 
 export interface Question {

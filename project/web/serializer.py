@@ -34,7 +34,7 @@ class TheorySerializer(serializers.ModelSerializer):
 class PracticeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Practice
-        fields = ('id', 'title', 'description', 'questions_count', 'course_id')
+        fields = ('id', 'title', 'description', 'questions_count', 'image', 'course_id')
 
 
 class QuestionsSerializer(serializers.ModelSerializer):
