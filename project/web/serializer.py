@@ -32,6 +32,8 @@ class TheorySerializer(serializers.ModelSerializer):
 
 
 class PracticeSerializer(serializers.ModelSerializer):
+    questions_count = serializers.IntegerField(read_only=True)
+
     class Meta:
         model = Practice
         fields = ('id', 'title', 'description', 'questions_count', 'image', 'course_id')
