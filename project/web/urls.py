@@ -57,17 +57,17 @@ urlpatterns = [
         'delete': 'destroy',
     })),
     # юрл списка вопросов привязанных к практике
-    path('courses/<int:course_id>/practice/<int:practice>/question', practice_question),
+    path('courses/<str:free>/<int:course_id>/practice/<int:practice>/question', practice_question),
     # юрл конкретного вопроса привязанного к практике
-    path('courses/<int:course_id>/practice/<int:practice>/question/<int:pk>', QuestionListView.as_view({
+    path('courses/<str:free>/<int:course_id>/practice/<int:practice>/question/<int:pk>', QuestionListView.as_view({
         'get': 'retrieve',
         'put': 'update',
         'delete': 'destroy',
     })),
     # юрл списка ответов связанных с вопросом
-    path('courses/<int:theory_url>/practice/<int:practice>/question/<int:question>/answers', question_answers),
-    # юрл конкретного ответа связанного с вопросом
-    path('courses/<int:theory_url>/practice/<int:practice>/question/<int:question>/answers/<int:pk>', AnswersListView.as_view({
+    path('courses/<str:free>/<int:theory_url>/practice/<int:practice>/question/<int:question>/answers',
+         question_answers),    # юрл конкретного ответа связанного с вопросом
+    path('courses/<str:free>/<int:theory_url>/practice/<int:practice>/question/<int:question>/answers/<int:pk>', AnswersListView.as_view({
         'get': 'retrieve',
         'put': 'update',
         'delete': 'destroy',
