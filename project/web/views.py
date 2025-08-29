@@ -10,6 +10,7 @@ from django.db.models import Count
 
 
 class Logout(APIView):
+    """Вью выхода из личного кабинета"""
     permission_classes = (IsAuthenticated, )
 
     def post(self, request):
@@ -23,7 +24,7 @@ class Logout(APIView):
 
 
 class RegisterView(APIView):
-
+    """Вью регистрации"""
     def post(self, request):
         serializer = UserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -32,6 +33,7 @@ class RegisterView(APIView):
 
 
 class TheoriesListView(viewsets.ModelViewSet):
+    """Вью списка теорий"""
     # permission_classes = (IsAuthenticated, )
     queryset = Theorys.objects.all()
     serializer_class = TheorySerializer
@@ -43,6 +45,7 @@ class TheoriesListView(viewsets.ModelViewSet):
 
 
 class PracticeListView(viewsets.ModelViewSet):
+    """Вью списка практики"""
     serializer_class = PracticeSerializer
 
     def get_queryset(self):
@@ -56,6 +59,7 @@ class PracticeListView(viewsets.ModelViewSet):
 
 
 class QuestionListView(viewsets.ModelViewSet):
+    """Вью списка вопросов"""
     serializer_class = QuestionsSerializer
 
     def get_queryset(self):
@@ -64,6 +68,7 @@ class QuestionListView(viewsets.ModelViewSet):
 
 
 class AnswersListView(viewsets.ModelViewSet):
+    """Вью списка ответов"""
     serializer_class = AnswerSerializer
 
     def get_queryset(self):
@@ -72,6 +77,7 @@ class AnswersListView(viewsets.ModelViewSet):
 
 
 class CourseFreeDetailSerializerView(viewsets.ModelViewSet):
+    """Вью списка деталей бесплатных курсов"""
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
 
@@ -89,6 +95,7 @@ class CourseFreeDetailSerializerView(viewsets.ModelViewSet):
 
 
 class CourseListView(generics.ListAPIView):
+    """Вью списка курсов"""
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
 
