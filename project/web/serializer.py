@@ -3,6 +3,7 @@ from .models import Course, Theorys, Practice, Questions, Answers, User
 
 
 class UserSerializer(serializers.ModelSerializer):
+    """Сериалайзер пользователя"""
     class Meta:
         model = User
         fields = ['id', 'username', 'password']
@@ -20,18 +21,21 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class CourseSerializer(serializers.ModelSerializer):
+    """Сериайлайзер курса"""
     class Meta:
         model = Course
         fields = ('id', 'title_theory', 'image_title', 'about', 'free',)
 
 
 class TheorySerializer(serializers.ModelSerializer):
+    """Сериалайзер теории"""
     class Meta:
         model = Theorys
         fields = ('id', 'title_theory', 'text_theory', 'about_theory', 'image_theory', 'course_id', 'theory_id')
 
 
 class PracticeSerializer(serializers.ModelSerializer):
+    """Сериалайзер практики"""
     questions_count = serializers.IntegerField(read_only=True)
 
     class Meta:
@@ -40,6 +44,7 @@ class PracticeSerializer(serializers.ModelSerializer):
 
 
 class QuestionsSerializer(serializers.ModelSerializer):
+    """Сериалайзер вопроса"""
     class Meta:
         model = Questions
         fields = ('id', 'question', 'image_question',
@@ -47,6 +52,7 @@ class QuestionsSerializer(serializers.ModelSerializer):
 
 
 class AnswerSerializer(serializers.ModelSerializer):
+    """Сериалайзер ответа"""
     class Meta:
         model = Answers
         fields = ('id', 'question_str', 'question')
