@@ -15,6 +15,7 @@ import { AuthGuard } from './components/AuthGuard';
 import { Header } from './components/Header';
 import { Profile } from './pages/Profile';
 import { ThemeProvider } from './context/ThemeContext';
+import { PracticeSession } from './pages/PracticeSession.tsx';
 
 export default function App() {
   return (
@@ -56,6 +57,14 @@ export default function App() {
               element={
                 <AuthGuard>
                 <PracticePage />
+                </AuthGuard>
+            }
+            />
+            <Route
+              path="/courses/:courseId/practice/:practiceId/session"
+              element={
+                <AuthGuard>
+                <PracticeSession />
                 </AuthGuard>
             }
             />
