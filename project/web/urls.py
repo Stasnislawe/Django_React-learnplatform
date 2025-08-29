@@ -1,9 +1,6 @@
 from django.urls import path, include
-from web.views import CourseListView, PracticeListView, QuestionListView, AnswersListView, TheoriesListView, Logout, RegisterView, CourseFreeDetailSerializerView
-from django.conf import settings
+from .views import CourseListView, PracticeListView, QuestionListView, AnswersListView, TheoriesListView, Logout, RegisterView, CourseFreeDetailSerializerView
 from rest_framework_simplejwt import views as jwt_views
-from rest_framework import routers
-from django.conf.urls.static import static
 
 # Роутер сам создает юрл по типу /courses || /courses/<int:pk>
 # router = routers.DefaultRouter()
