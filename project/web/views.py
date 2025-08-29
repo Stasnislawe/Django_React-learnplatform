@@ -6,6 +6,7 @@ from rest_framework import status, viewsets, generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
+from django.db.models import Count
 
 
 class Logout(APIView):
@@ -42,12 +43,16 @@ class TheoriesListView(viewsets.ModelViewSet):
 
 
 class PracticeListView(viewsets.ModelViewSet):
-    queryset = Practice.objects.all()
     serializer_class = PracticeSerializer
 
     def get_queryset(self):
         course_id = self.kwargs['course_id']
-        return self.queryset.filter(course_id=course_id)
+
+        return Practice.objects.filter(
+            course_id=course_id
+        ).annotate(
+            questions_count=Count('questions')
+        )
 
 
 class QuestionListView(viewsets.ModelViewSet):
