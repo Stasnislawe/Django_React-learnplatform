@@ -29,7 +29,22 @@ export const usePractices = (courseId: string | undefined) => {
         }
 
         const data: Practice[] = await response.json();
-        setPractices(data);
+
+        // Добавляем статус прохождения из localStorage
+        const practicesWithStatus = data.map(practice => {
+          const completedPractices = JSON.parse(localStorage.getItem('completedPractices') || '{}');
+          const practiceProgress = JSON.parse(localStorage.getItem('practiceProgress') || '{}');
+          const practiceKey = `course-${courseId}-practice-${practice.id}`;
+
+          return {
+            ...practice,
+            is_completed: completedPractices[practiceKey] || false,
+            completed_questions: practiceProgress[practiceKey]?.completed || 0,
+            total_questions: practiceProgress[practiceKey]?.total || practice.question_count
+          };
+        });
+
+        setPractices(practicesWithStatus);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Unknown error');
       } finally {
